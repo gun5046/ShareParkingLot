@@ -1,6 +1,8 @@
 package com.example.jumouser.service.impl;
 
+import com.example.domain.dto.user.LoginRequestDto;
 import com.example.domain.dto.user.SignUpRequestDto;
+import com.example.domain.dto.user.UserInfoDto;
 import com.example.domain.dto.user.UserProfileResponseDto;
 import com.example.domain.entity.FcmToken;
 import com.example.domain.entity.PhoneValidation;
@@ -8,6 +10,7 @@ import com.example.domain.entity.User;
 import com.example.domain.repo.TokenRepo;
 import com.example.domain.repo.UserRepo;
 import com.example.domain.repo.ValidationRepo;
+import com.example.jumouser.factory.UserFactory;
 import com.example.jumouser.service.UserService;
 import com.example.jumouser.util.NotificationUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +39,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final TokenRepo tokenRepo;
     private final ValidationRepo validationRepo;
+    private final UserFactory userFactory;
+
     @Value("${spring.cloud.gcp.storage.bucket}")
     private String drawingStorage;
     private DefaultMessageService messageService;
@@ -72,6 +77,7 @@ public class UserServiceImpl implements UserService {
             return Optional.of(new User());
         }
     }
+
 
     public UserProfileResponseDto getUserProfile(Long user_id){
 
@@ -177,5 +183,15 @@ public class UserServiceImpl implements UserService {
             }
         }
         return false;
+    }
+
+    @Override
+    public UserInfoDto getUserInfo(LoginRequestDto requestDto) {
+        return userFactory.loginSelector(requestDto.getType()).getUserInfo(requestDto);
+    }
+
+    @Override
+    public Optional<User> checkUser(UserInfoDto userInfoDto, LoginRequestDto requestDto) {
+        return  userFactory.loginSelector(requestDto.getType()).checkUser(userInfoDto);
     }
 }

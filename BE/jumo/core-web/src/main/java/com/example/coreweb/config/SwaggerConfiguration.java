@@ -32,12 +32,8 @@ public class SwaggerConfiguration {
         return new ApiInfo(
                 "Ju, Mo",
                 "version1.0",
-                "",
-                new Contact("Contact Me", "", "luminaries1@gmial.com"),
-                "Edit Licenses",
-                "",
-                new ArrayList<>()
-        );
+                "v1", "Contact Me",  "luminaries1@gmial.com","asd"
+        ,"asd");
     }
 
 }

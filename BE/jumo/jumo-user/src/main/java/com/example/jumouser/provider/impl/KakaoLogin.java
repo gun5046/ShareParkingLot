@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Component
+
 public class KakaoLogin implements LoginProvider {
 
     private final UserRepo userRepo;
-    private KakaoLogin(UserRepo userRepo){
+    public KakaoLogin(UserRepo userRepo){
         this.userRepo=userRepo;
     }
     public static KakaoLogin getInstance(UserRepo userRepo){

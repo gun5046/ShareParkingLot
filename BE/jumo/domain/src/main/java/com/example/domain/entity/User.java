@@ -2,6 +2,8 @@ package com.example.domain.entity;
 
 
 import javax.persistence.*;
+
+import com.example.domain.dto.user.LoginResponseDto;
 import com.example.domain.dto.user.SignUpRequestDto;
 import lombok.*;
 
@@ -71,5 +73,19 @@ public class User {
 
     public void updateProfileImg(String url){
         this.profileImg = url;
+    }
+
+    public LoginResponseDto toLoginRepsonse(String token){
+        return LoginResponseDto.builder()
+                .user_id(this.getUserId())
+                .name(this.getName())
+                .email(this.getEmail())
+                .phone(this.getPhone())
+                .profile_img(this.getProfileImg())
+                .ptHas(this.getPtHas())
+                .type(this.getType())
+                .social_id(this.getSocialId())
+                .fcm_token(token)
+                .build();
     }
 }

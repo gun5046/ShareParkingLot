@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+
 public class JumoLogin implements LoginProvider  {
 
     private final UserRepo userRepo;
 
-    private JumoLogin(UserRepo userRepo){
+    public JumoLogin(UserRepo userRepo){
         this.userRepo=userRepo;
     }
     public static JumoLogin getInstance(UserRepo userRepo){

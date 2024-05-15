@@ -1,6 +1,8 @@
 package com.example.jumouser.service;
 
+import com.example.domain.dto.user.LoginRequestDto;
 import com.example.domain.dto.user.SignUpRequestDto;
+import com.example.domain.dto.user.UserInfoDto;
 import com.example.domain.dto.user.UserProfileResponseDto;
 import com.example.domain.entity.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,4 +23,8 @@ public interface UserService {
     Boolean sendAuthMessage(String phone);
 
     Boolean certificatePhone(String phone,String code);
+
+    UserInfoDto getUserInfo(LoginRequestDto requestDto);
+
+    Optional<User> checkUser(UserInfoDto userInfoDto,LoginRequestDto requestDto);
 }

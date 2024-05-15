@@ -10,12 +10,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
-@Component
 public class NaverLogin implements LoginProvider {
 
     private final UserRepo userRepo;
 
-    private NaverLogin(UserRepo userRepo){
+    public NaverLogin(UserRepo userRepo){
         this.userRepo =userRepo;
     }
     public static NaverLogin getInstance(UserRepo userRepo){

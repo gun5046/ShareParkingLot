@@ -2,6 +2,7 @@ package com.example.jumouser.controller;
 
 
 import com.example.domain.dto.user.*;
+import com.example.error.exception.NoDataException;
 import com.example.jumouser.factory.UserFactory;
 import com.example.jumouser.provider.LoginProvider;
 import com.example.jumouser.service.UserService;
@@ -27,32 +28,18 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final UserFactory userFactory;
 
     @ApiOperation(value = "로그인", notes = "Type : Kakao,Naver,Jumo 로그인, Dto 참조")
     @GetMapping("/login")
     public LoginResponseDto login(@ModelAttribute("loginRequestDto") LoginRequestDto requestDto) {
 
-        System.out.println(requestDto.toString());
-        UserInfoDto userInfoDto = userFactory.loginSelector(requestDto.getType()).getUserInfo(requestDto);
-        Optional<User> user = userFactory.loginSelector(requestDto.getType()).checkUser(userInfoDto);
+        UserInfoDto userInfoDto = userService.getUserInfo(requestDto);
+        Optional <User> user = userService.checkUser(userInfoDto,requestDto);
+        if(user.isEmpty()) throw new NoDataException(this.getClass().getName() + " Login Failed");
         if(user.get().getUserId()!=null) {
             userService.updateFcmToken(user.get().getUserId(),requestDto.getFcm_token());
         }
-        LoginResponseDto responseDto = LoginResponseDto.builder()
-                .user_id(user.get().getUserId())
-                .name(user.get().getName())
-                .email(user.get().getEmail())
-                .phone(user.get().getPhone())
-                .profile_img(user.get().getProfileImg())
-                .ptHas(user.get().getPtHas())
-                .type(user.get().getType())
-                .social_id(user.get().getSocialId())
-                .fcm_token(requestDto.getFcm_token())
-                .build();
-        System.out.println(responseDto.toString());
-
-        return responseDto;
+        return user.get().toLoginRepsonse(requestDto.getFcm_token());
 
     }
 
